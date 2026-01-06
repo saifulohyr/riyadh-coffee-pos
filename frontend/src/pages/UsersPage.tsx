@@ -11,6 +11,7 @@ export function UsersPage() {
   const [formData, setFormData] = useState({
     name: '',
     username: '',
+    email: '',
     role: 'cashier' as 'admin' | 'cashier' | 'kitchen',
   })
 
@@ -20,6 +21,7 @@ export function UsersPage() {
       setFormData({
         name: user.name,
         username: user.username,
+        email: user.email,
         role: user.role,
       })
     } else {
@@ -27,6 +29,7 @@ export function UsersPage() {
       setFormData({
         name: '',
         username: '',
+        email: '',
         role: 'cashier',
       })
     }
@@ -149,6 +152,16 @@ export function UsersPage() {
                   required
                   value={formData.username}
                   onChange={e => setFormData({...formData, username: e.target.value})}
+                  className="w-full px-4 py-2 rounded-xl bg-[hsl(var(--secondary))] border-transparent focus:border-[hsl(var(--primary))] focus:ring-0"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-1">Email</label>
+                <input
+                  type="email"
+                  required
+                  value={formData.email}
+                  onChange={e => setFormData({...formData, email: e.target.value})}
                   className="w-full px-4 py-2 rounded-xl bg-[hsl(var(--secondary))] border-transparent focus:border-[hsl(var(--primary))] focus:ring-0"
                 />
               </div>
