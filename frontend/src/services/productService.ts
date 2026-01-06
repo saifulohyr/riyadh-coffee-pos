@@ -9,7 +9,6 @@ interface BackendProduct {
   price: string;
   stock: number;
   description: string | null;
-  imageUrl: string | null;
 }
 
 // Transform backend product to frontend Product type
@@ -20,7 +19,6 @@ const transformProduct = (bp: BackendProduct): Product => ({
   price: parseFloat(bp.price),
   stock: bp.stock,
   description: bp.description || undefined,
-  image: bp.imageUrl || undefined,
   isAvailable: bp.stock > 0,
 })
 
@@ -53,7 +51,6 @@ export const productService = {
       price: product.price,
       stock: stockValue,
       description: product.description || null,
-      imageUrl: product.image || null,
     }
 
     const result = await apiPost<{ id: number }>('/api/products', payload)
@@ -78,7 +75,6 @@ export const productService = {
       payload.stock = updates.stock === 'unlimited' ? 9999 : (typeof updates.stock === 'number' ? updates.stock : 0)
     }
     if (updates.description !== undefined) payload.description = updates.description || null
-    if (updates.image !== undefined) payload.imageUrl = updates.image || null
 
     await apiPut(`/api/products/${id}`, payload)
     
@@ -98,7 +94,6 @@ export const productService = {
       price: updates.price || 0,
       stock,
       description: updates.description,
-      image: updates.image,
       isAvailable: stock > 0,
     }
   },

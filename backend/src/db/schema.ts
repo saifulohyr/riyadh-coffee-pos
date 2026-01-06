@@ -18,7 +18,6 @@ export const products = mysqlTable('products', {
   price: decimal('price', { precision: 12, scale: 2 }).notNull(),
   stock: int('stock').notNull().default(0),
   description: text('description'),
-  imageUrl: varchar('image_url', { length: 500 }),
 });
 
 // ============================================

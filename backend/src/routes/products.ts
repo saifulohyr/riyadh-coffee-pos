@@ -1,47 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { productService } from '../services/productService.js';
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 const router = Router();
-
-// Helper to save base64 image
-const saveBase64Image = (base64Data: string): string | null => {
-  try {
-    // Check if it's already a URL (doesn't start with data:)
-    if (!base64Data.startsWith('data:')) {
-      return base64Data;
-    }
-
-    const matches = base64Data.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
-    if (!matches || matches.length !== 3) {
-      return null;
-    }
-    
-    const type = matches[1];
-    const buffer = Buffer.from(matches[2], 'base64');
-    const extension = type === 'image/jpeg' ? 'jpg' : type === 'image/png' ? 'png' : 'jpg';
-    
-    // Ensure uploads dir exists
-    const uploadDir = path.join(__dirname, '../../uploads');
-    
-    if (!fs.existsSync(uploadDir)){
-        fs.mkdirSync(uploadDir, { recursive: true });
-    }
-
-    const filename = `prod-${Date.now()}-${Math.round(Math.random() * 1E9)}.${extension}`;
-    fs.writeFileSync(path.join(uploadDir, filename), buffer);
-    
-    return `/uploads/${filename}`;
-  } catch (e) {
-    console.error("Image save error", e);
-    return null;
-  }
-}
 
 /**
  * GET /api/products
@@ -109,7 +69,7 @@ router.get('/:id', async (req: Request, res: Response) => {
  */
 router.post('/', async (req: Request, res: Response) => {
   try {
-    const { name, category, price, stock, imageUrl, description } = req.body;
+    const { name, category, price, stock, description } = req.body;
 
     // Validate required fields
     if (!name || !category || price === undefined) {
@@ -120,21 +80,11 @@ router.post('/', async (req: Request, res: Response) => {
       return;
     }
 
-    // Process image if exists
-    let processedImageUrl = imageUrl;
-    if (imageUrl) {
-      const savedPath = saveBase64Image(imageUrl);
-      if (savedPath) {
-        processedImageUrl = savedPath;
-      }
-    }
-
     const productId = await productService.createProduct({
       name,
       category,
       price: String(price),
       stock: stock || 0,
-      imageUrl: processedImageUrl,
       description,
     });
 
@@ -168,23 +118,13 @@ router.put('/:id', async (req: Request, res: Response) => {
       return;
     }
 
-    const { name, category, price, stock, imageUrl, description } = req.body;
-
-    // Process image if exists
-    let processedImageUrl = imageUrl;
-    if (imageUrl) {
-        const savedPath = saveBase64Image(imageUrl);
-        if (savedPath) {
-            processedImageUrl = savedPath;
-        }
-    }
+    const { name, category, price, stock, description } = req.body;
 
     await productService.updateProduct(id, {
       ...(name && { name }),
       ...(category && { category }),
       ...(price !== undefined && { price: String(price) }),
       ...(stock !== undefined && { stock }),
-      ...(processedImageUrl !== undefined && { imageUrl: processedImageUrl }),
       ...(description !== undefined && { description }),
     });
 

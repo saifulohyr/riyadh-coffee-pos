@@ -161,11 +161,7 @@ export function POSPage() {
               >
                 {/* Product Image */}
                 <div className="w-full aspect-square rounded-xl bg-[hsl(var(--secondary))] mb-4 flex items-center justify-center text-[hsl(var(--muted-foreground))] group-hover:scale-105 transition-transform duration-300 shadow-inner overflow-hidden relative">
-                   {product.image ? (
-                     <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
-                   ) : (
-                     getCategoryIconLarge(product.categoryId)
-                   )}
+                   {getCategoryIconLarge(product.categoryId)}
                    
                    {/* Info Button */}
                    {product.description && (
@@ -465,11 +461,7 @@ export function POSPage() {
 
             {/* Hero Image */}
             <div className="-mx-6 -mt-6 mb-6 aspect-video bg-[hsl(var(--secondary))] w-[calc(100%+3rem)] relative flex items-center justify-center">
-              {viewProduct.image ? (
-                <img src={viewProduct.image} alt={viewProduct.name} className="w-full h-full object-cover" />
-              ) : (
-                getCategoryIconLarge(viewProduct.categoryId) // Need a giant version here? Or just icon
-              )}
+              {getCategoryIconLarge(viewProduct.categoryId)}
               <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[hsl(var(--card))] to-transparent" />
             </div>
 

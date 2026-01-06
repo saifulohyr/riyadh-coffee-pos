@@ -31,7 +31,6 @@ export interface Product {
   name: string
   price: number
   categoryId: string
-  image?: string
   stock: number | 'unlimited'
   isAvailable: boolean
   description?: string

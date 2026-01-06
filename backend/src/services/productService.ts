@@ -67,7 +67,6 @@ class ProductService {
     category: string;
     price: string;
     stock: number;
-    imageUrl?: string;
     description?: string;
   }): Promise<number> {
     const result = await db.insert(products).values({
@@ -75,7 +74,6 @@ class ProductService {
       category: data.category,
       price: data.price,
       stock: data.stock,
-      imageUrl: data.imageUrl,
       description: data.description,
     });
     return result[0].insertId;
@@ -91,7 +89,6 @@ class ProductService {
       category: string;
       price: string;
       stock: number;
-      imageUrl: string;
       description: string;
     }>
   ): Promise<void> {

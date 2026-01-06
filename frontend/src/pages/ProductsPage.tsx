@@ -1,7 +1,7 @@
-import { useState, useRef } from 'react'
+import { useState } from 'react'
 import { cn, formatCurrency } from '@/lib/utils'
 import { useProductStore } from '@/stores/useProductStore'
-import { Plus, Search, Edit2, Trash2, Package, X, Image as ImageIcon, Upload, Coffee, Utensils, GlassWater, IceCream } from 'lucide-react'
+import { Plus, Search, Edit2, Trash2, Package, X, Coffee, Utensils, GlassWater, IceCream } from 'lucide-react'
 import type { Product, Category } from '@/types'
 
 // Helper for category icons
@@ -25,9 +25,6 @@ export function ProductsPage() {
   const [filterCategory, setFilterCategory] = useState('')
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [editingProduct, setEditingProduct] = useState<Product | null>(null)
-  
-  // File input ref
-  const fileInputRef = useRef<HTMLInputElement>(null)
 
   // Form state
   const [formData, setFormData] = useState({
@@ -36,7 +33,6 @@ export function ProductsPage() {
     categoryId: '',
     stock: 'unlimited' as number | 'unlimited',
     description: '',
-    image: '',
   })
   
   // Fetch on mount (already handled in MainLayout but safe to keep or rely on store)
@@ -57,7 +53,6 @@ export function ProductsPage() {
         categoryId: product.categoryId,
         stock: product.stock,
         description: product.description || '',
-        image: product.image || '',
       })
     } else {
       const productCategories = getProductCategories(categories)
@@ -68,25 +63,9 @@ export function ProductsPage() {
         categoryId: productCategories[0]?.id || 'coffee',
         stock: 'unlimited',
         description: '',
-        image: '',
       })
     }
     setIsModalOpen(true)
-  }
-
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (file) {
-      if (file.size > 5000000) { // 5MB limit
-        alert("Ukuran gambar terlalu besar (maks 5MB)")
-        return
-      }
-      const reader = new FileReader()
-      reader.onloadend = () => {
-        setFormData(prev => ({ ...prev, image: reader.result as string }))
-      }
-      reader.readAsDataURL(file)
-    }
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -100,7 +79,6 @@ export function ProductsPage() {
       stock: formData.stock,
       isAvailable: true,
       description: formData.description,
-      image: formData.image,
     }
 
     if (editingProduct) {
@@ -194,14 +172,9 @@ export function ProductsPage() {
                 <tr key={product.id} className="border-b border-[hsl(var(--border))] hover:bg-[hsl(var(--secondary)/0.5)] transition-colors">
                   <td className="p-4">
                     <div className="flex items-center gap-3">
-                      {/* Image Preview */}
+                      {/* Category Icon */}
                       <div className="w-12 h-12 rounded-lg bg-[hsl(var(--secondary))] flex items-center justify-center text-2xl overflow-hidden border border-[hsl(var(--border))] text-[hsl(var(--muted-foreground))]">
-                        {product.image ? (
-                          <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
-                        ) : (
-                          // Fallback Icon
-                          getCategoryIcon(product.categoryId, "w-6 h-6")
-                        )}
+                        {getCategoryIcon(product.categoryId, "w-6 h-6")}
                       </div>
                       <div>
                         <p className="font-medium text-[hsl(var(--foreground))]">{product.name}</p>
@@ -276,34 +249,6 @@ export function ProductsPage() {
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-4">
-              {/* Image Upload */}
-              <div className="flex justify-center mb-4">
-                <div 
-                  className="w-32 h-32 rounded-2xl bg-[hsl(var(--secondary))] border-2 border-dashed border-[hsl(var(--border))] flex flex-col items-center justify-center cursor-pointer hover:border-[hsl(var(--primary))] transition-colors relative overflow-hidden group"
-                  onClick={() => fileInputRef.current?.click()}
-                >
-                  {formData.image ? (
-                    <>
-                      <img src={formData.image} alt="Preview" className="w-full h-full object-cover" />
-                      <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                        <Edit2 className="w-6 h-6 text-white" />
-                      </div>
-                    </>
-                  ) : (
-                    <>
-                      <ImageIcon className="w-8 h-8 text-[hsl(var(--muted-foreground))] mb-2" />
-                      <span className="text-xs text-[hsl(var(--muted-foreground))]">Upload Foto</span>
-                    </>
-                  )}
-                  <input 
-                    type="file" 
-                    ref={fileInputRef} 
-                    className="hidden" 
-                    accept="image/*"
-                    onChange={handleImageUpload}
-                  />
-                </div>
-              </div>
 
               <div>
                 <label className="text-sm font-medium text-[hsl(var(--foreground))] mb-1 block">Nama Produk</label>
