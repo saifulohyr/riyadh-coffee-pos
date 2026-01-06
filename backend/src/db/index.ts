@@ -10,7 +10,7 @@ const getConnectionConfig = () => {
     return {
       uri: process.env.DATABASE_URL,
       ssl: {
-        rejectUnauthorized: true
+        rejectUnauthorized: false
       }
     };
   }
