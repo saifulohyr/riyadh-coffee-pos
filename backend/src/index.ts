@@ -6,6 +6,7 @@ import { auth } from './lib/auth.js';
 import productRoutes from './routes/products.js';
 import transactionRoutes from './routes/transactions.js';
 import reportRoutes from './routes/reports.js';
+import seedRoutes from './routes/seed.js';
 
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -59,6 +60,7 @@ app.get('/health', (_req, res) => {
 app.use('/api/products', productRoutes);
 app.use('/api/transactions', transactionRoutes);
 app.use('/api/reports', reportRoutes);
+app.use('/api', seedRoutes);
 
 // 404 handler
 app.use((_req, res) => {
