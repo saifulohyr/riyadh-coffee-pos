@@ -4,7 +4,7 @@ import { products } from '../db/schema.js';
 
 const router = Router();
 
-router.post('/seed', async (_req, res) => {
+router.all('/seed', async (_req, res) => {
   try {
     // Delete existing products
     await db.delete(products);
