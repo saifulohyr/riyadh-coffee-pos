@@ -1,14 +1,19 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { cn, formatTime } from '@/lib/utils'
 import { useOrderStore } from '@/stores/useOrderStore'
 import { useTableStore } from '@/stores/useTableStore'
 import { ORDER_STATUS_LABELS } from '@/types'
 import { Clock, Check, Bell, Volume2, VolumeX } from 'lucide-react'
 
+// Notification sound URL (free sound effect)
+const NOTIFICATION_SOUND = 'https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3'
+
 export function KitchenPage() {
   const { orders, updateOrderItemStatus, updateOrderStatus, completeOrder } = useOrderStore()
   const { tables } = useTableStore()
   const [soundEnabled, setSoundEnabled] = useState(true)
+  const prevPendingCountRef = useRef(0)
+  const audioRef = useRef<HTMLAudioElement | null>(null)
 
   const pendingOrders = orders.filter(
     (o) => o.status === 'pending' || o.status === 'preparing' || o.status === 'ready'
@@ -18,11 +23,28 @@ export function KitchenPage() {
 
   const pendingCount = orders.filter((o) => o.status === 'pending').length
 
-  // Play sound when new order arrives
+  // Initialize audio on mount
   useEffect(() => {
-    if (soundEnabled && pendingCount > 0) {
-      // In production, play notification sound
+    audioRef.current = new Audio(NOTIFICATION_SOUND)
+    audioRef.current.volume = 0.7
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause()
+        audioRef.current = null
+      }
     }
+  }, [])
+
+  // Play sound when NEW order arrives (pendingCount increases)
+  useEffect(() => {
+    if (soundEnabled && pendingCount > prevPendingCountRef.current && audioRef.current) {
+      audioRef.current.currentTime = 0
+      audioRef.current.play().catch(() => {
+        // Browser may block autoplay, user needs to interact first
+        console.log('Sound blocked by browser. Click anywhere to enable.')
+      })
+    }
+    prevPendingCountRef.current = pendingCount
   }, [pendingCount, soundEnabled])
 
   const getTimeSince = (date: Date) => {
