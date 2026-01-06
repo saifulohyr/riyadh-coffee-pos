@@ -27,14 +27,15 @@ Unlike traditional POS systems, this application features a **Glassmorphism-insp
 - **Fast & Intuitive Interface**: Designed for touchscreens with large, categorized menu grids.
 - **Smart Cart Management**: Add items, customize orders (notes), and adjust quantities instantaneously.
 - **Quick Payment Flow**: One-tap cash presets (50k, 100k) and automatic tax calculation (11% PPN).
-- **Product Details**: Rich product presentations with high-resolution image support.
+- **Category Icons**: Clean, icon-based product display for fast visual scanning.
 
 ### 🍳 Kitchen Display System (KDS)
 - **Real-time Order Tracking**: Orders appear instantly in the kitchen view.
 - **Status Management**: Track order lifecycle from `Pending` → `Preparing` → `Ready` → `Completed`.
+- **Sound Notifications**: Audio alert when new orders arrive (toggleable).
 
 ### 📊 Admin Dashboard
-- **Product Management**: comprehensive CRUD operations with **local file system image storage** for performance.
+- **Product Management**: Comprehensive CRUD operations with category-based organization.
 - **Sales Analytics**: Detailed daily transaction reports with **Excel Export** capability.
 - **User Management**: Secure staff access control with role-based permissions (Admin/Cashier/Kitchen).
 
@@ -43,7 +44,7 @@ Unlike traditional POS systems, this application features a **Glassmorphism-insp
 ## � Screenshots
 
 ### Product Management
-Manage your inventory with ease. Upload images, set stock levels, and categorize items.
+Manage your inventory with ease. Set stock levels and categorize items with intuitive icons.
 ![Product Management](docs/screenshots/product-management.png)
 
 ### Payment Processing
@@ -60,7 +61,7 @@ The system follows a modern **Client-Server** architecture:
 |-----------|------------|-------------|
 | **Frontend** | React + Zustand | Lightning-fast SPA with global state management for cart/orders. |
 | **Backend** | Express + Drizzle | Type-safe API layer connecting to MySQL. Optimized for speed. |
-| **Storage** | Local File System | Zero-latency image serving via static proxy. |
+| **Database** | MySQL (Aiven) | Cloud-hosted database for production deployment. |
 | **Auth** | Better Auth | Secure, session-based authentication. |
 
 ---
@@ -130,9 +131,9 @@ Access the application at **http://localhost:5173**.
 
 | Role | Email | Password |
 |------|-------|----------|
-| **Admin** | `admin@riyadhcoffee.com` | `admin123` |
-| **Cashier** | `cashier@riyadhcoffee.com` | `cashier123` |
-| **Kitchen** | `kitchen@riyadhcoffee.com` | `kitchen123` |
+| **Admin** | `admin@riyadh.coffee` | `admin123` |
+| **Cashier** | `cashier@riyadh.coffee` | `cashier123` |
+| **Kitchen** | `kitchen@riyadh.coffee` | `kitchen123` |
 
 ---
 
