@@ -4,6 +4,8 @@ import { db } from '../db/index.js';
 import * as schema from '../db/schema.js';
 
 export const auth = betterAuth({
+  secret: process.env.BETTER_AUTH_SECRET || 'fallback-secret-key-for-development',
+  baseURL: process.env.BETTER_AUTH_URL || 'http://localhost:5000',
   database: drizzleAdapter(db, {
     provider: 'mysql',
     schema: {
