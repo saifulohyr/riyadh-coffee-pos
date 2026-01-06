@@ -5,8 +5,7 @@ import {
   decimal, 
   timestamp, 
   json,
-  text,
-  boolean
+  text
 } from 'drizzle-orm/mysql-core';
 
 // ============================================

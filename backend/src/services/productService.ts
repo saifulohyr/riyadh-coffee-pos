@@ -68,6 +68,7 @@ class ProductService {
     price: string;
     stock: number;
     imageUrl?: string;
+    description?: string;
   }): Promise<number> {
     const result = await db.insert(products).values({
       name: data.name,
@@ -75,6 +76,7 @@ class ProductService {
       price: data.price,
       stock: data.stock,
       imageUrl: data.imageUrl,
+      description: data.description,
     });
     return result[0].insertId;
   }
@@ -90,6 +92,7 @@ class ProductService {
       price: string;
       stock: number;
       imageUrl: string;
+      description: string;
     }>
   ): Promise<void> {
     await db.update(products).set(data).where(eq(products.id, id));
