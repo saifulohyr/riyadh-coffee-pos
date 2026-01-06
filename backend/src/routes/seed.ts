@@ -41,7 +41,8 @@ router.all('/seed', async (_req, res) => {
     console.error('Seed error:', error);
     res.status(500).json({
       success: false,
-      error: 'Failed to seed products'
+      error: 'Failed to seed products',
+      details: error instanceof Error ? error.message : String(error)
     });
   }
 });
