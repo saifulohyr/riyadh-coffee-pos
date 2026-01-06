@@ -1,0 +1,38 @@
+{
+  "name": "riyadh-coffee-backend",
+  "version": "1.0.0",
+  "description": "Backend API for Riyadh Coffee POS System",
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "db:create": "tsx scripts/create-db.ts",
+    "db:generate": "drizzle-kit generate",
+    "db:push": "drizzle-kit push",
+    "db:seed": "tsx scripts/seed.ts",
+    "db:studio": "drizzle-kit studio"
+  },
+  "keywords": ["pos", "coffee", "express", "drizzle"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "better-auth": "^1.2.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "drizzle-orm": "^0.41.0",
+    "express": "^4.21.0",
+    "mysql2": "^3.11.0",
+    "uuid": "^10.0.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/node": "^22.0.0",
+    "@types/uuid": "^10.0.0",
+    "drizzle-kit": "^0.31.4",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0"
+  }
+}
